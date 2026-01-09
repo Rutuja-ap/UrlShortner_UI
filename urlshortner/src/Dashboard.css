@@ -1,0 +1,175 @@
+/* Wrapper + background gradient */
+.dashboard-wrapper {
+  position: relative;
+  min-height: 100vh;
+  padding: 50px 20px;
+  background-color: #0f0f10 ;
+  overflow: hidden;
+  font-family: "Poppins", sans-serif;
+  
+}
+
+.gradient-bg {
+  position: absolute;
+  top: -30%;
+  left: -30%;
+  width: 160%;
+  height: 160%;
+  background: radial-gradient(
+    ellipse at top left,
+    #ff0000,
+    #14b8a6,
+    #c026d3
+  );
+  opacity: 0.15;
+  filter: blur(200px);
+  z-index: 0;
+}
+
+/* Dashboard container */
+.dashboard-container {
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 30px;
+  background-color: #1c1c1f;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  z-index: 1;
+  color: #e2e8f0;
+  text-align: center;
+}
+
+/* Gradient text for title */
+.gradient-text {
+  font-size: 2.2rem;
+  font-weight: 700;
+  background: radial-gradient(
+    ellipse at left,
+    #8b5cf6,
+    #14b8a6,
+    #ef4444
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 25px;
+}
+.subtitle {
+  font-size: 1.5rem;          /* slightly bigger text */
+  font-weight: 500;            /* medium weight */
+  text-align: center;
+  margin-top: 10px;
+  
+  /* Gradient text */
+  background: linear-gradient(90deg, #8b5cf6, #14b8a6, #ef4444);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  
+  /* Optional: subtle floating animation */
+  animation: floatGradient 3s ease-in-out infinite alternate;
+}
+
+/* Animation for gradient movement */
+@keyframes floatGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Make the gradient smoothly animate */
+.subtitle {
+  background-size: 200% 200%;
+}
+
+/* Mode selection */
+.mode-selection {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+.mode-selection label {
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* Input fields */
+.url-input {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  border: 1px solid #333;
+  background-color: #121212;
+  color: #e2e8f0;
+  font-size: 16px;
+}
+
+/* Button */
+.shorten-btn {
+  padding: 12px 28px;
+  font-size: 16px;
+  background: linear-gradient(90deg, #262528, #4f415e, #504d8b);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.shorten-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+}
+.shorten-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Result Table */
+.result-section {
+  margin-top: 30px;
+  overflow-x: auto;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+th, td {
+  padding: 12px;
+  border: 1px solid #333;
+  text-align: left;
+}
+th {
+  background: linear-gradient(90deg, #8b5cf6, #14b8a6, #ef4444);
+  color: white;
+}
+td {
+  background-color: #1c1c1f;
+  color: #e2e8f0;
+}
+td button {
+  padding: 5px 12px;
+  font-size: 14px;
+  background: linear-gradient(90deg, #14b8a6, #8b5cf6);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+td button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
