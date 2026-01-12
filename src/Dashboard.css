@@ -152,7 +152,7 @@ th, td {
   text-align: left;
 }
 th {
-  background: linear-gradient(90deg, #8b5cf6, #14b8a6, #ef4444);
+  background: linear-gradient(90deg, #48424d, #7b5d70, #a377ba);
   color: white;
 }
 td {
@@ -162,7 +162,7 @@ td {
 td button {
   padding: 5px 12px;
   font-size: 14px;
-  background: linear-gradient(90deg, #14b8a6, #8b5cf6);
+  background: linear-gradient(90deg, #262528, #4f415e, #504d8b);
   color: white;
   border: none;
   border-radius: 6px;

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:8084/api"; // ⚠️ port must match backend
+const API_BASE_URL = "http://localhost:8080/api"; // ⚠️ port must match backend
 
 export const shortenUrl = async (longUrl) => {
   return await axios.post(

@@ -12,20 +12,25 @@ const Dashboard = () => {
     setLoading(true);
     try {
       if (mode === "single") {
-        const response = await fetch("http://localhost:8084/api/shorten", {
+        const response = await fetch("http://localhost:8080/api/shorten", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ originalUrl: input.trim() }),
         });
-        const shortCode = await response.text();
-        setResult({ [input.trim()]: shortCode });
+        if (!response.ok) {
+          const errMsg = await response.text(); // e.g., "Invalid URL ❌" or "URL unreachable ❌"
+          setResult({ [input.trim()]: errMsg });
+        } else {
+          const shortCode = await response.text();
+          setResult({ [input.trim()]: shortCode });
+        }
       } else {
         const urls = input
           .split("\n")
           .map((u) => u.trim())
           .filter((u) => u !== "");
         const response = await fetch(
-          "http://localhost:8084/api/shorten/bulk",
+          "http://localhost:8080/api/shorten/bulk",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -123,9 +128,13 @@ const Dashboard = () => {
                 {Object.entries(result).map(([longUrl, shortUrl], idx) => (
                   <tr key={idx}>
                     <td>{longUrl}</td>
-                    <td>{shortUrl}</td>
+                    <td style={{ color: shortUrl.includes("❌") ? "red" : "white" }}>
+                      {shortUrl}
+                    </td>
                     <td>
-                      <button onClick={() => handleCopy(shortUrl)}>Copy</button>
+                      {!shortUrl.includes("❌") && (
+                        <button onClick={() => handleCopy(shortUrl)}>Copy</button>
+                      )}
                     </td>
                   </tr>
                 ))}
