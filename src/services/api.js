@@ -2,32 +2,24 @@ import axios from "axios";
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
+const api = axios.create({
+  baseURL: API_BASE_URL,
+  timeout: 15000, 
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
 /* ---------- SINGLE URL ---------- */
 export const shortenUrl = async (originalUrl) => {
-  return axios.post(
-    `${API_BASE_URL}/shorten`,
-    {
-      originalUrl: originalUrl, // ⚠ MUST match DTO field name
-    },
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
+  return api.post("/shorten", {
+    originalUrl,
+  });
 };
 
 /* ---------- BULK URLS ---------- */
 export const shortenBulkUrls = async (urls) => {
-  return axios.post(
-    `${API_BASE_URL}/shorten/bulk`,
-    {
-      urls: urls, // must match backend request body
-    },
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
+  return api.post("/shorten/bulk", {
+    urls,
+  });
 };
