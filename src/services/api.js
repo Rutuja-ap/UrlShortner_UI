@@ -1,17 +1,33 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:8080/api"; // ⚠️ port must match backend
+const API_BASE_URL = "https://urlshortner-production-ef4f.up.railway.app/api/";
 
-export const shortenUrl = async (longUrl) => {
-  return await axios.post(
+/* ---------- SINGLE URL ---------- */
+export const shortenUrl = async (originalUrl) => {
+  return axios.post(
     `${API_BASE_URL}/shorten`,
     {
-      url: longUrl   // ✅ JSON object
+      originalUrl: originalUrl, // ⚠ MUST match DTO field name
     },
     {
       headers: {
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
+    }
+  );
+};
+
+/* ---------- BULK URLS ---------- */
+export const shortenBulkUrls = async (urls) => {
+  return axios.post(
+    `${API_BASE_URL}/shorten/bulk`,
+    {
+      urls: urls, // must match backend request body
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
     }
   );
 };

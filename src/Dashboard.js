@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./Dashboard.css";
+import { shortenUrl, shortenBulkUrls } from "./services/api";
 
 const Dashboard = () => {
   const [mode, setMode] = useState("single");
@@ -8,41 +9,39 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(false);
 
   const handleShorten = async () => {
-    if (!input.trim()) return alert("Please enter URL(s)!");
+    if (!input.trim()) {
+      alert("Please enter URL(s)!");
+      return;
+    }
+
     setLoading(true);
+    setResult({});
+
     try {
       if (mode === "single") {
-        const response = await fetch("http://localhost:8080/api/shorten", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ originalUrl: input.trim() }),
-        });
-        if (!response.ok) {
-          const errMsg = await response.text(); // e.g., "Invalid URL ❌" or "URL unreachable ❌"
-          setResult({ [input.trim()]: errMsg });
-        } else {
-          const shortCode = await response.text();
-          setResult({ [input.trim()]: shortCode });
-        }
+        const res = await shortenUrl(input.trim());
+        setResult({ [input.trim()]: res.data });
       } else {
         const urls = input
           .split("\n")
           .map((u) => u.trim())
           .filter((u) => u !== "");
-        const response = await fetch(
-          "http://localhost:8080/api/shorten/bulk",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ urls }),
-          }
-        );
-        const data = await response.json();
-        setResult(data);
+
+        const res = await shortenBulkUrls(urls);
+        setResult(res.data);
       }
-    } catch (err) {
-      console.error(err);
-      alert("Error shortening URL(s)!");
+    } catch (error) {
+      console.error("Backend error:", error);
+
+      if (error.response) {
+        const msg =
+          typeof error.response.data === "string"
+            ? error.response.data
+            : "Invalid request ❌";
+        setResult({ [input.trim()]: msg });
+      } else {
+        alert("Backend not reachable ❌");
+      }
     } finally {
       setLoading(false);
     }
@@ -75,6 +74,7 @@ const Dashboard = () => {
             />
             Single URL
           </label>
+
           <label>
             <input
               type="radio"
@@ -108,7 +108,11 @@ const Dashboard = () => {
           />
         )}
 
-        <button className="shorten-btn" onClick={handleShorten} disabled={loading}>
+        <button
+          className="shorten-btn"
+          onClick={handleShorten}
+          disabled={loading}
+        >
           {loading ? "Shortening..." : "Shorten URL(s)"}
         </button>
 
@@ -116,6 +120,7 @@ const Dashboard = () => {
         {Object.keys(result).length > 0 && (
           <div className="result-section">
             <h3>Shortened URL(s)</h3>
+
             <table>
               <thead>
                 <tr>
@@ -124,16 +129,23 @@ const Dashboard = () => {
                   <th>Action</th>
                 </tr>
               </thead>
+
               <tbody>
                 {Object.entries(result).map(([longUrl, shortUrl], idx) => (
                   <tr key={idx}>
                     <td>{longUrl}</td>
-                    <td style={{ color: shortUrl.includes("❌") ? "red" : "white" }}>
+                    <td
+                      style={{
+                        color: shortUrl.includes("❌") ? "red" : "white",
+                      }}
+                    >
                       {shortUrl}
                     </td>
                     <td>
                       {!shortUrl.includes("❌") && (
-                        <button onClick={() => handleCopy(shortUrl)}>Copy</button>
+                        <button onClick={() => handleCopy(shortUrl)}>
+                          Copy
+                        </button>
                       )}
                     </td>
                   </tr>
