@@ -1,7 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "https://urlshortner-production-ef4f.up.railway.app/api/";
-
+const API_BASE_URL = process.env.APP_BACKEND_URL;
 /* ---------- SINGLE URL ---------- */
 export const shortenUrl = async (originalUrl) => {
   return axios.post(
